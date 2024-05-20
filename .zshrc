@@ -1,11 +1,11 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
 # Set name of the theme to load.
 ZSH_THEME="spaceship"
+
+# Load oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 # Set auto-update behavior
 zstyle ':omz:update' mode auto
