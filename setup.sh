@@ -7,23 +7,29 @@ sudo apt update && sudo apt install -y \
     git \
     fzf
 
-# Install oh-my-zsh
-yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Install oh-my-zsh if the folder doesn't exist
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
 # Install powerline-fonts
 git submodule update --init --recursive
-cd powerline-fonts && ./install.sh
+./powerline-fonts/install.sh
+
+# Create symlinks
+ln -s -f $(pwd)/.zshrc ~/.zshrc
+
+# Change shell
+zsh
 
 # Install spaceship theme
 git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
 ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 
-# Create symlinks
-ln -s -f $(pwd)/.zshrc ~/.zshrc
-
 # Install plugins
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
-# Change shell
-zsh
+# Finalize installation
+source ~/.zshrc
+cd ~/
