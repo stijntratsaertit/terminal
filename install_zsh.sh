@@ -19,5 +19,8 @@ git submodule update --init --recursive
 # Create symlink
 ln -s -f $(pwd)/.zshrc ~/.zshrc
 
+# Change default shell
+chsh -s $(which zsh)
+
 # Load shell
 zsh
