@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo "Script execution failed, please use sudo"
+  exit
+fi
+
 # Install dependencies
 apt update && apt install -y \
     curl
