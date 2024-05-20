@@ -11,11 +11,26 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 cat ~/.ssh/id_ed25519.pub
 # Copy the key to your clipboard and add it to your GitHub account
 ```
-1. Clone the repository
+3. Clone the repository
 ```bash
 git clone git@github.com:stijntratsaertit/terminal.git && cd terminal
 ```
-3. Run the script
+4. Run the installation script
 ```bash
-./setup.sh
+./install_zsh.sh
+```
+5. Upon completion, install the Spaceship theme
+```bash
+git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+```
+6. Install the zsh plugins
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+```
+7. Finalize the installation
+```bash
+source ~/.zshrc
+cd ~
 ```
