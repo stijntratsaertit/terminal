@@ -7,9 +7,9 @@ fi
 
 # Install dependencies
 apt update && apt install -y \
-    curl
-    zsh
-    git
+    curl \
+    zsh \
+    git \
     fzf
 
 # Install oh-my-zsh
