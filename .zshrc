@@ -1,8 +1,8 @@
-# Load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
 # Path to your oh-my-zsh installation.
 export ZSH="~/.oh-my-zsh"
+
+# Load oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 # Set name of the theme to load.
 ZSH_THEME="spaceship"
