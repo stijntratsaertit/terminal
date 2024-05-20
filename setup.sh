@@ -16,6 +16,7 @@ apt update && apt install -y \
 yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install powerline-fonts
+git submodule update --init --recursive
 cd powerline-fonts && ./install.sh
 
 # Install spaceship theme
@@ -28,3 +29,6 @@ ln -s -f $(pwd)/.zshrc ~/.zshrc
 # Install plugins
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# Change shell
+zsh
