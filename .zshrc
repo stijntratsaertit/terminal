@@ -4,9 +4,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # Set name of the theme to load.
 ZSH_THEME="spaceship"
 
-# Load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
 # Set auto-update behavior
 zstyle ':omz:update' mode auto
 
@@ -26,6 +23,9 @@ zsh-syntax-highlighting
 zsh-autosuggestions
 fzf
 )
+
+# Load oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 # Set spaceship theme options
 SPACESHIP_DOCKER_SHOW=false
