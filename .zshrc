@@ -1,3 +1,10 @@
+# Load Homebrew on macOS (Apple Silicon or Intel)
+if [[ "$OSTYPE" == darwin* ]]; then
+  for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    [[ -x "$brew_bin" ]] && eval "$("$brew_bin" shellenv)" && break
+  done
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 

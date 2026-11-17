@@ -1,10 +1,18 @@
 # Terminal
 
 ## Usage
+Works on Linux (Debian/Ubuntu, via `apt`) and macOS (via Homebrew, which the install script sets up if it's missing).
+
 1. Install git
+
+Linux:
 ```bash
 sudo apt-get install git -y
-``` 
+```
+macOS:
+```bash
+xcode-select --install
+```
 2. [Create and add a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
