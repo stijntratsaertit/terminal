@@ -1,26 +1,78 @@
 #!/bin/bash
+set -e
+
+cd "$(dirname "$0")"
+
+OS="$(uname -s)"
 
 # Install dependencies
-sudo apt update && sudo apt install -y \
-    curl \
-    zsh \
-    git \
-    fzf
+case "$OS" in
+  Linux)
+    sudo apt update && sudo apt install -y \
+        curl \
+        zsh \
+        git \
+        fzf
+    ;;
+  Darwin)
+    # Install Homebrew if it isn't available yet
+    if ! command -v brew >/dev/null 2>&1; then
+      for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        [ -x "$brew_bin" ] && eval "$("$brew_bin" shellenv)" && break
+      done
+    fi
+    if ! command -v brew >/dev/null 2>&1; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        [ -x "$brew_bin" ] && eval "$("$brew_bin" shellenv)" && break
+      done
+    fi
+    # zsh and curl ship with macOS
+    brew install git fzf
+    ;;
+  *)
+    echo "Unsupported OS: $OS" >&2
+    exit 1
+    ;;
+esac
 
 # Install oh-my-zsh if the folder doesn't exist
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
+
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+# Clone a repository into a folder unless it's already there
+clone_if_missing() {
+  if [ ! -d "$2" ]; then
+    git clone --depth=1 "$1" "$2"
+  fi
+}
+
+# Install the spaceship theme
+clone_if_missing https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+ln -s -f "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
+# Install zsh plugins
+clone_if_missing https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+clone_if_missing https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 
 # Install powerline-fonts
 git submodule update --init --recursive
 ./powerline-fonts/install.sh
 
 # Create symlink
-ln -s -f $(pwd)/.zshrc ~/.zshrc
+ln -s -f "$(pwd)/.zshrc" ~/.zshrc
 
 # Change default shell
-chsh -s $(which zsh)
+ZSH_PATH="$(command -v zsh)"
+if [ "$SHELL" != "$ZSH_PATH" ]; then
+  if ! grep -qx "$ZSH_PATH" /etc/shells; then
+    echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
+  fi
+  chsh -s "$ZSH_PATH"
+fi
 
 # Load shell
-zsh
+exec zsh
