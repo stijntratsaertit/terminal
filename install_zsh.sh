@@ -41,6 +41,23 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+# Clone a repository into a folder unless it's already there
+clone_if_missing() {
+  if [ ! -d "$2" ]; then
+    git clone --depth=1 "$1" "$2"
+  fi
+}
+
+# Install the spaceship theme
+clone_if_missing https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+ln -s -f "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
+# Install zsh plugins
+clone_if_missing https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+clone_if_missing https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+
 # Install powerline-fonts
 git submodule update --init --recursive
 ./powerline-fonts/install.sh
